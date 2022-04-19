@@ -1,0 +1,110 @@
+<html>
+    <head>
+        <title>Reading App</title>
+
+        <script>
+            // const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+            function sleep(ms) {
+                var start = new Date().getTime(), expire = start + ms;
+                while (new Date().getTime() < expire) { }
+                return;
+            }
+        </script>
+
+        <script>
+            window.onload = init;
+            var context;
+
+            function init() {
+                // Fix up prefixing
+                window.AudioContext = window.AudioContext || window.webkitAudioContext;
+                context = new AudioContext();
+            }
+
+            const sources = [];
+            const gainNodes = [];
+
+            var songList = ['http://localhost:4567/generated_chunked/0/0.mp3'];
+            var songBuffers = []
+
+            function loadSongs() {
+                for (let i = 0; i < songList.length; i++) {
+
+                    songBuffers.push(new Audio(songList[i]));
+                    songBuffers[songBuffers.length - 1].crossOrigin = "anonymous";
+
+                    let tempCreatedSource = context.createMediaElementSource(songBuffers[songBuffers.length - 1]);
+                    
+                    sources.push(tempCreatedSource);
+                    songBuffers.push(new Audio(songList[i]));
+                    gainNodes.push(context.createGain());
+                    // gainNodes[gainNodes.length-1].connect(context.destination);
+                }
+            }
+
+            function playSongs() {
+                sources[0].connect(gainNodes[0]).connect(context.destination);
+
+                console.log(Object.getOwnPropertyNames(sources[0]));
+
+                songBuffers[0].play();
+
+                window.setTimeout(() => {
+
+                    console.log(gainNodes[0].gain.value);
+
+                    var currTime = context.currentTime;
+                    gainNodes[0].gain.linearRampToValueAtTime(1, currTime);
+                    gainNodes[0].gain.linearRampToValueAtTime(0, currTime + 10);
+
+                    // while (gainNodes[0].gain.value > 0.1) {
+                    //     console.log(gainNodes[0].gain.value);
+                    //     gainNodes[0].gain.value = gainNodes[0].gain.value / 1.5;
+                    //     sleep(2000);
+                    // }
+                    // // songBuffers[0].pause();
+                    // gainNodes[0].gain.value = 0.1;
+                    // songBuffers[0].pause();
+                }, 5000);
+
+                window.setTimeout(() => console.log(gainNodes[0].gain.value), 10000);
+            }
+
+            window.setTimeout(loadSongs, 1000);
+            console.log(sources);
+            console.log(sources.length);
+
+            window.setTimeout(playSongs, 2000);
+
+        </script>
+    </head>
+    <body>
+        <h1> Hello </h1>
+        <button id="play">Play!</button>
+    </body>
+    <script>
+        // const URL = '../SoundtrackingBooks-Streamlit/generated_chunked/0/0.mp3';
+
+        // // window.AudioContext = window.AudioContext || window.webkitAudioContext;
+        // // context = new AudioContext();        
+
+        // var audio = new Audio();
+        // audio.src = '../SoundtrackingBooks-Streamlit/generated_chunked/0/0.mp3';
+        // audio.controls = true;
+        // audio.autoplay = true;
+
+        // document.body.appendChild(audio);
+
+        // var context = new AudioContext();
+        // var analyser = context.createAnalyser();
+
+
+        // window.addEventListener('load', function(e) {
+        //     // Our <audio> element will be the audio source.
+        //     var source = context.createMediaElementSource(audio);
+        //     source.connect(analyser);
+        //     analyser.connect(context.destination);
+        // }, false);
+    </script>
+</html>
