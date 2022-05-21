@@ -84,18 +84,20 @@ export default class Reader extends React.Component {
         const fadeTimes = 10;
         const fadeTimem = fadeTimes * 1000;
 
-        console.log(kill, revive, this.state.context)
+        console.log(kill, revive, this.state.context);
 
         var currTime = this.state.context.currentTime;
-        console.log(this.sources, this.gainNodes, this.state.context.destination);
+        // console.log(this.sources, this.gainNodes, this.state.context.destination);
 
         this.state.sources[revive].connect(this.gainNodes[revive])
         this.state.gainNodes[revive].connect(this.state.context.destination);
 
+        console.log(currTime, currTime + fadeTimes, fadeTimem);
+
         this.state.gainNodes[revive].gain.linearRampToValueAtTime(0, currTime);
         this.state.gainNodes[revive].gain.linearRampToValueAtTime(1, currTime + fadeTimes);
-        this.state.songBuffers[revive].play();
         this.state.songBuffers[revive].loop = true;
+        this.state.songBuffers[revive].play();
 
         if (kill < 0) {
             return;
@@ -189,7 +191,7 @@ export default class Reader extends React.Component {
                 <div className="px-5 pb-5">
                     <span className="px-4"> 
                         <button className="btn btn-light" onClick={() => this.state.context.resume()}>
-                            Load Stuff
+                            Start Now
                         </button>
                     </span>
                 </div>
@@ -197,7 +199,7 @@ export default class Reader extends React.Component {
                     // console.log(text, idx);
                     <React.Fragment>
                         <TextChunk key={idx} id={idx} text={text}/>
-                        <hr/>
+                        {/* <hr/> */}
                     </React.Fragment>
                 ))}
             </div>
