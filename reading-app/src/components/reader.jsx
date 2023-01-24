@@ -1,7 +1,5 @@
 import React from 'react';
 
-const chapterFolder = '../../../../SoundtrackingBooks-Streamlit/data/chunks/';
-
 class TextChunk extends React.Component {
 
     constructor(props) {

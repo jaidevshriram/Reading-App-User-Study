@@ -50,7 +50,7 @@ export default class App extends React.Component {
       <React.Fragment>
         <div id="navigation-bar">
               <nav className="navbar navbar-light navbar-expand bg-light p-3">
-                  <a className="navbar-brand" href="https://google.com">
+                  <a className="navbar-brand" href="#">
                       {/* <img src="logo.svg" width="30" height="30" class="d-inline-block align-top px-2" alt=""/> */}
                       <strong>Reading App</strong>
                   </a>
